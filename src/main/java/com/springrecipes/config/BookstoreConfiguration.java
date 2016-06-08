@@ -1,12 +1,12 @@
 package com.springrecipes.config;
 
-import com.springrecipes.bookshop.JdbcBookShop;
-import com.springrecipes.bookshop.TransactionalJdbcBookShop;
+import com.springrecipes.bookshop.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -14,6 +14,7 @@ import javax.sql.DataSource;
  * Author: Jerzy Plocha on 07/06/16.
  */
 @Configuration
+@EnableTransactionManagement()
 public class BookstoreConfiguration {
 
     @Bean
@@ -26,18 +27,24 @@ public class BookstoreConfiguration {
         return dataSource;
     }
 
-    @Bean(name = "TBookShop")
-    public TransactionalJdbcBookShop bookShop(){
-        TransactionalJdbcBookShop shop = new TransactionalJdbcBookShop();
-        shop.setDataSource(dataSource());
-        shop.setTransactionManager(transactionManager());
-        return shop;
-    }
-
     @Bean
     public PlatformTransactionManager transactionManager(){
         DataSourceTransactionManager tm = new DataSourceTransactionManager();
         tm.setDataSource(dataSource());
         return tm;
+    }
+
+    @Bean
+    public BookShop bookShop(){
+        JdbcBookShop shop = new JdbcBookShop();
+        shop.setDataSource(dataSource());
+        return shop;
+    }
+
+    @Bean
+    public Cashier cashier(){
+        BookShopCashier cashier = new BookShopCashier();
+        cashier.setBookShop(bookShop());
+        return cashier;
     }
 }
