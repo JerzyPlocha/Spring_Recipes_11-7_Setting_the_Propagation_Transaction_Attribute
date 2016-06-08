@@ -1,6 +1,6 @@
 package com.springrecipes;
 
-import com.springrecipes.bookshop.BookShop;
+import com.springrecipes.bookshop.TransactionalJdbcBookShop;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +12,7 @@ public class Application {
 
 		ApplicationContext context = SpringApplication.run(Application.class, args);
 
-		BookShop shop = (BookShop) context.getBean("bookShop");
+		TransactionalJdbcBookShop shop = (TransactionalJdbcBookShop) context.getBean("TbookShop");
 		shop.purchase("0001", "user1");
 	}
 }

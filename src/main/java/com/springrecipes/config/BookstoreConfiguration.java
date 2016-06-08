@@ -1,10 +1,11 @@
 package com.springrecipes.config;
 
-import com.springrecipes.bookshop.BookShop;
-import com.springrecipes.bookshop.JdbcBookShop;
+import com.springrecipes.bookshop.TransactionalJdbcBookShop;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -24,10 +25,18 @@ public class BookstoreConfiguration {
         return dataSource;
     }
 
-    @Bean
-    public BookShop bookShop(){
-        JdbcBookShop shop = new JdbcBookShop();
+    @Bean(name = "TbookShop")
+    public TransactionalJdbcBookShop bookShop(){
+        TransactionalJdbcBookShop shop = new TransactionalJdbcBookShop();
         shop.setDataSource(dataSource());
+        shop.setTransactionManager(transactionManager());
         return shop;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(){
+        DataSourceTransactionManager tm = new DataSourceTransactionManager();
+        tm.setDataSource(dataSource());
+        return tm;
     }
 }
