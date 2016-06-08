@@ -1,5 +1,6 @@
 package com.springrecipes.config;
 
+import com.springrecipes.bookshop.JdbcBookShop;
 import com.springrecipes.bookshop.TransactionalJdbcBookShop;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,13 @@ public class BookstoreConfiguration {
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/BOOKSHOP");
-        dataSource.setUsername("**");
-        dataSource.setPassword("**");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/BOOKSHOP");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("password");
         return dataSource;
     }
 
-    @Bean(name = "TbookShop")
+    @Bean(name = "TBookShop")
     public TransactionalJdbcBookShop bookShop(){
         TransactionalJdbcBookShop shop = new TransactionalJdbcBookShop();
         shop.setDataSource(dataSource());

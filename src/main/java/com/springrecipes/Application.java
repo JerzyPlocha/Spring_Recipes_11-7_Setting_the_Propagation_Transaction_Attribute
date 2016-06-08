@@ -12,7 +12,7 @@ public class Application {
 
 		ApplicationContext context = SpringApplication.run(Application.class, args);
 
-		TransactionalJdbcBookShop shop = (TransactionalJdbcBookShop) context.getBean("TbookShop");
+		TransactionalJdbcBookShop shop = (TransactionalJdbcBookShop) context.getBean("TBookShop");
 		shop.purchase("0001", "user1");
 	}
 }

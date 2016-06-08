@@ -37,13 +37,14 @@ public class TransactionalJdbcBookShop extends JdbcDaoSupport implements BookSho
             );
 
             getJdbcTemplate().update(
-                    "UPDATE ACCOUNT SET `BALANCE` = `BALANCE` - ? WHERE USERNAME = ?",
+                    "UPDATE ACCOUNT SET BALANCE = BALANCE - ? WHERE USERNAME = ?",
                     new Object[]{ price, username }
             );
 
             transactionManager.commit(status);
 
         } catch (DataAccessException e){
+
             transactionManager.rollback(status);
             throw e;
         }
